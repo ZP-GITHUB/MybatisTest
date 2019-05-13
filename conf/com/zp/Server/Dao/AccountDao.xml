@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zp.Server.Dao.AccountDao">
+<!-- 
+namespace:名称空间;指定为接口的全类名
+id：唯一标识
+resultType：返回值类型
+#{id}：从传递过来的参数中取出id值
+public Employee getEmpById(Integer id);
+ -->
+ 
+ 	<!--public Account getAccountByID(String AccountNum)  -->
+ 	<select id="getAccountByID" resultType="com.zp.Server.model.Account">
+		SELECT * FROM `account` WHERE `AccountNum`=#{AccountNum};
+  	</select>
+
+	<!--public List<Account> getAccountAll();  -->
+	<select id="getAccountAll" resultType="com.zp.Server.model.Account">
+		SELECT * FROM `account` ;
+	</select>
+
+	<!--public List<Account> getAccountByState(String State); -->
+	<select id="getAccountByState" resultType="com.zp.Server.model.Account">
+		SELECT * FROM `account` WHERE `State`=#{State} ;
+	</select>
+
+	<!--public List<Account> getAccountByStateRand(String uid,String state, int num);-->
+	<select id="getAccountByStateRand" resultType="com.zp.Server.model.Account">
+		SELECT * FROM `account` WHERE `State`=#{state} AND `UserID`=#{uid} order by rand() limit #{num};
+	</select>
+
+	<!--public Object getAccountNumsByState(@Param("state") String state);-->
+	<select id="getAccountNumsByState" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `account` WHERE `State`=#{state};
+	</select>
+
+	<!--public Object getAccountNumsBy_S_U(@Param("state") String state,@Param("uid") String uid);-->
+	<select id="getAccountNumsBy_S_U" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `account` WHERE `State`=#{state} AND `UserID`=#{uid};
+	</select>
+
+	<!--public Object getAccountNumsBy_S_U_T(@Param("state") String state,@Param("uid") String uid,@Param("type") String type);-->
+	<select id="getAccountNumsBy_S_U_T" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `account` WHERE `State`=#{state} AND `UserID`=#{uid} AND `Type`=#{type};
+	</select>
+
+	<!--public List<Account> getAccountAll_By_U_S(@Param("uid") String uid,@Param("state") String state);-->
+	<select id="getAccountAll_By_U_S" resultType="com.zp.Server.model.Account">
+		SELECT * FROM `account` WHERE `State`= #{state} AND `UserID`= #{uid};
+	</select>
+
+	<!--public Object getAccountNumsByType_U(@Param("uid") String uid,@Param("type") String type);-->
+	<select id="getAccountNumsByType_U" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `account` WHERE `Type`= #{type} AND `UserID`= #{uid};
+	</select>
+
+	<!-- parameterType：参数类型，可以省略， 
+	获取自增主键的值：
+		mysql支持自增主键，自增主键值的获取，mybatis也是利用statement.getGenreatedKeys()；
+		useGeneratedKeys="true"；使用自增主键获取主键值策略
+		keyProperty；指定对应的主键属性，也就是mybatis获取到主键值以后，将这个值封装给javaBean的哪个属性
+	-->
+	<!--public int addUserIDforTwtter(@Param("userId") String userId,@Param("accountNum") String accountNum);-->
+	<update id="addUserIDforTwtter">
+		UPDATE `account`
+		SET `UserID` = #{userId}
+		WHERE `AccountNum`= #{accountNum};
+	</update>
+
+
+	<!--public int ModifyAccount(Account account);-->
+	<update id="ModifyAccount">
+		UPDATE  `account`
+		SET `State`=#{State}
+		WHERE `AccountNum`=#{AccountNum};
+	</update>
+
+	<!--public int modifyAccountState(String AccountNum,String State);-->
+	<update id="modifyAccountState">
+		UPDATE  `account`
+		SET `State`=#{State}
+		WHERE `AccountNum`=#{AccountNum};
+	</update>
+
+	<!--public int modifyAccountUseState(@Param("accountNum") String accountNum,@Param("useState") String useState);-->
+	<update id="modifyAccountUseState">
+		UPDATE  `account`
+		SET `UseState`= #{useState}
+		WHERE `AccountNum`= #{accountNum};
+	</update>
+
+	<!--public int InsertupdateAccount(Account account);-->
+	<update id="InsertupdateAccount">
+		UPDATE account
+		SET Plaform=#{Plaform},`Language`=#{Language},UserID=#{UserID},State=#{State},UseState=#{UseState},phone=#{phone},Main_page=#{Main_page}
+		WHERE account.AccountNum=#{AccountNum};
+	</update>
+
+
+</mapper>
